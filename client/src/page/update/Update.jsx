@@ -3,6 +3,8 @@ import "../../app.css";
 import FormInput from "../../components/FormInput";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { SnackbarProvider, enqueueSnackbar } from "notistack";
+
 const Update = () => {
   const [values, setValues] = useState({
     username: "",
@@ -85,6 +87,16 @@ const Update = () => {
         .put(`http://localhost:8800/api/auth/data12/${DataId}`, values)
         .then((data) => console.log("Data submitted successfully" + data))
         .catch((err) => "some err has occurred during submitting" + err);
+      const message = "Data Updated Successfully";
+      enqueueSnackbar(message, {
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+          autoHideDuration: 3000,
+          variant: "success",
+        },
+      });
+      navigate("/about");
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +118,28 @@ const Update = () => {
             onChange={onChange}
           />
         ))}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label>Select Gender:</label>
+          <select
+            style={{ width: "380px", padding: "5px" }}
+            name="gender"
+            value={values.gender}
+            onChange={onChange}
+          >
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other </option>
+          </select>
+        </div>
+        <SnackbarProvider
+          variant="success"
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        />
         <button>Update</button>
       </form>
     </div>

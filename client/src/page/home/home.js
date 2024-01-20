@@ -1,13 +1,17 @@
 import { useState } from "react";
-import "../../app.css";
+// import "../../app.css";
 import FormInput from "../../components/FormInput";
 import axios from "axios";
+import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { createBrowserRouter, useNavigate } from "react-router-dom";
+
 const Home = () => {
   const [values, setValues] = useState({
     username: "",
     email: "",
     employee_id: "",
     mobile: "",
+    gender: "",
     age: "",
     other_mobile: "",
   });
@@ -73,13 +77,27 @@ const Home = () => {
       pattern: "^+91[6-9]d{9}$",
     },
   ];
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
       const res = axios
         .post("http://localhost:8800/api/auth/register", values)
-        .then((data) => console.log("Data submitted successfully" + data))
+        .then((data) => {
+          console.log("Data submitted successfully" + data);
+          const message = "Data Submitted Successfully";
+          enqueueSnackbar(message, {
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+              autoHideDuration: 3000,
+              variant: "success",
+            },
+          });
+          setTimeout(() => {
+            navigate("/about");
+          }, 2000);
+        })
         .catch((err) => "some err has occurred during submitting" + err);
     } catch (error) {
       console.log(error);
@@ -93,7 +111,7 @@ const Home = () => {
   return (
     <div className="app">
       <form onSubmit={handleSubmit}>
-        <h1>Register</h1>
+        <h1>Sign Up</h1>
         {inputs.map((input) => (
           <FormInput
             key={input.id}
@@ -102,6 +120,27 @@ const Home = () => {
             onChange={onChange}
           />
         ))}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label>Select Gender:</label>
+          <select
+            style={{ width: "380px", padding: "5px" }}
+            name="gender"
+            value={values.gender}
+            onChange={onChange}
+          >
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other </option>
+          </select>
+        </div>
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        />
         <button>Submit</button>
       </form>
     </div>

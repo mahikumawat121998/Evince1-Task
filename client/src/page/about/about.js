@@ -1,59 +1,7 @@
 import { useEffect, useState } from "react";
-import { Users } from "./data";
-// import "./about.css";
+import "./about.css";
 import Table from "./Table";
 import axios from "axios";
-
-//////////////////////BASIC SEARCH
-
-// function App() {
-//   const [query, setQuery] = useState("");
-//   return (
-//     <div className="app">
-//       <input
-//         className="search"
-//         placeholder="Search..."
-//         onChange={(e) => setQuery(e.target.value.toLowerCase())}
-//       />
-//       <ul className="list">
-//         {Users.filter((asd) =>
-//           asd.first_name.toLowerCase().includes(query)
-//         ).map((user) => (
-//           <li className="listItem" key={user.id}>
-//             {user.first_name}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-///////////////////////SEARCH ON A DATATABLE
-
-// function About() {
-//   const [query, setQuery] = useState("");
-//   const keys = ["first_name", "last_name", "email"];
-//   const search = (data) => {
-//     return data.filter((item) =>
-//       keys.some((key) => item[key].toLowerCase().includes(query))
-//     );
-//   };
-//   return (
-//     <div>
-//       <div>
-//         <input
-//           style={{ background: "red" }}
-//           className="search"
-//           placeholder="Search..."
-//           onChange={(e) => setQuery(e.target.value.toLowerCase())}
-//         />
-//       </div>
-//       <div>{<Table data={search(Users)} />}</div>
-//     </div>
-//   );
-// }
-
-////////////////////// API SEARCH
 
 function About() {
   const [query, setQuery] = useState("");
@@ -68,13 +16,32 @@ function About() {
   }, [query]);
 
   return (
-    <div className="app">
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "1100px",
+        }}
+      >
         <input
-          className="search"
+          style={{
+            width: "500px",
+            padding: "15px",
+            margin: "10px",
+            border: "1px solid #000",
+            borderRadius: "0px",
+          }}
           placeholder="Search..."
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
         />
-      {<Table data={data} />}
+        {<Table data={data} />}
+      </div>
     </div>
   );
 }
